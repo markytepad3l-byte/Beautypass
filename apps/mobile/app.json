@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "BeautyPass",
+    "slug": "beautypass",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "beautypass",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#F9E8EF"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "app.beautypass",
+      "infoPlist": {
+        "NSCameraUsageDescription": "BeautyPass uses your camera to capture treatment photos and scan QR codes.",
+        "NSPhotoLibraryUsageDescription": "BeautyPass accesses your photo library to upload treatment photos."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#F9E8EF"
+      },
+      "package": "app.beautypass",
+      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"]
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        { "cameraPermission": "Allow BeautyPass to access your camera." }
+      ],
+      [
+        "expo-barcode-scanner",
+        { "cameraPermission": "Allow BeautyPass to access your camera to scan QR codes." }
+      ]
+    ]
+  }
+}
