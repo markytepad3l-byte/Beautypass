@@ -8,6 +8,8 @@
   ],
   "scripts": {
     "dev:backend": "npm run dev --workspace=apps/backend",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "build:web": "npm run build --workspace=apps/web",
     "test:backend": "npm run test --workspace=apps/backend",
     "build:backend": "npm run build --workspace=apps/backend"
   }

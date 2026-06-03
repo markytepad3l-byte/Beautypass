@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "forClients": "For clients",
+    "forProfessionals": "For professionals",
+    "about": "About",
+    "login": "Log in",
+    "getStarted": "Get started"
+  },
+  "hero": {
+    "headline": "Your beauty journey,\nin one place.",
+    "subheadline": "Track every treatment. Share on your terms. Understand your skin.",
+    "ctaClient": "I'm a client",
+    "ctaPro": "I'm a professional"
+  },
+  "sections": {
+    "mapJourney": {
+      "title": "Track every treatment, by zone.",
+      "body": "Map treatments to exact areas — face, neck, lips, and more. See your full history at a glance."
+    },
+    "shareTerms": {
+      "title": "Share, on your terms.",
+      "body": "Show your QR code. Your doctor gets exactly what you allow. Revoke anytime."
+    },
+    "builtWithCare": {
+      "title": "Built with care.",
+      "encrypted": "Encrypted at rest",
+      "encryptedDesc": "Your records are encrypted before they're stored. We can't read them.",
+      "yourData": "You own your data",
+      "yourDataDesc": "Export or delete everything, at any time, with one tap.",
+      "aiControl": "AI you control",
+      "aiControlDesc": "Insights are opt-in. We never send your photos or notes to AI."
+    }
+  },
+  "footer": {
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact"
+  },
+  "auth": {
+    "login": "Log in",
+    "register": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?"
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong.",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "confirm": "Confirm"
+  }
+}

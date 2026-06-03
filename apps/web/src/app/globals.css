@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+/* ─── Design tokens ─────────────────────────────────────────────────────── */
+
+@theme inline {
+  /* Typography */
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans:    var(--font-inter), system-ui, sans-serif;
+
+  /* Semantic color aliases — resolved from theme variables below */
+  --color-primary:      var(--bp-primary);
+  --color-primary-deep: var(--bp-primary-deep);
+  --color-cream:        var(--bp-cream);
+  --color-blush:        var(--bp-blush);
+  --color-surface:      var(--bp-surface);
+  --color-ink:          var(--bp-ink);
+  --color-muted:        var(--bp-muted);
+  --color-bg:           var(--bp-bg);
+  --color-border:       var(--bp-border);
+}
+
+/* ─── Theme: Rose (default) ──────────────────────────────────────────────── */
+
+:root,
+[data-theme="rose"] {
+  --bp-primary:      #C06078;
+  --bp-primary-deep: #7A3A4D;
+  --bp-cream:        #FBF6F2;
+  --bp-blush:        #FCE4D6;
+  --bp-surface:      #FFFFFF;
+  --bp-ink:          #2A1F24;
+  --bp-muted:        #9A8A8E;
+  --bp-bg:           #FBF6F2;
+  --bp-border:       #EDD8D0;
+}
+
+/* ─── Theme: Lavender ────────────────────────────────────────────────────── */
+
+[data-theme="lavender"] {
+  --bp-primary:      #9D7BC4;
+  --bp-primary-deep: #5D3A8A;
+  --bp-cream:        #F7F4FC;
+  --bp-blush:        #EDE4F8;
+  --bp-surface:      #FFFFFF;
+  --bp-ink:          #1E1A2A;
+  --bp-muted:        #8A82A0;
+  --bp-bg:           #F7F4FC;
+  --bp-border:       #DDD4EE;
+}
+
+/* ─── Theme: Sage ────────────────────────────────────────────────────────── */
+
+[data-theme="sage"] {
+  --bp-primary:      #7E9A7D;
+  --bp-primary-deep: #456344;
+  --bp-cream:        #F4F8F3;
+  --bp-blush:        #E2EEE1;
+  --bp-surface:      #FFFFFF;
+  --bp-ink:          #1A241A;
+  --bp-muted:        #82948A;
+  --bp-bg:           #F4F8F3;
+  --bp-border:       #CDDECB;
+}
+
+/* ─── Theme: Champagne ───────────────────────────────────────────────────── */
+
+[data-theme="champagne"] {
+  --bp-primary:      #B89968;
+  --bp-primary-deep: #7A6030;
+  --bp-cream:        #FBF8F2;
+  --bp-blush:        #F5EDD8;
+  --bp-surface:      #FFFFFF;
+  --bp-ink:          #241E12;
+  --bp-muted:        #9A8E78;
+  --bp-bg:           #FBF8F2;
+  --bp-border:       #E8D8B8;
+}
+
+/* ─── Dark mode overlay (applied alongside any theme) ───────────────────── */
+
+.dark {
+  --bp-cream:   #1A1118;
+  --bp-blush:   #261A22;
+  --bp-surface: #2A1F26;
+  --bp-ink:     #F5EEF0;
+  --bp-muted:   #A898A0;
+  --bp-bg:      #1A1118;
+  --bp-border:  #3A2A32;
+}
+
+/* Keep primary/primary-deep slightly lightened in dark mode */
+.dark[data-theme="rose"],
+.dark:not([data-theme]) {
+  --bp-primary:      #D4809A;
+  --bp-primary-deep: #C06078;
+}
+
+.dark[data-theme="lavender"] {
+  --bp-primary:      #B89DE0;
+  --bp-primary-deep: #9D7BC4;
+}
+
+.dark[data-theme="sage"] {
+  --bp-primary:      #9DBD9C;
+  --bp-primary-deep: #7E9A7D;
+}
+
+.dark[data-theme="champagne"] {
+  --bp-primary:      #CCAA7A;
+  --bp-primary-deep: #B89968;
+}
+
+/* ─── Base styles ────────────────────────────────────────────────────────── */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bp-bg);
+  color: var(--bp-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

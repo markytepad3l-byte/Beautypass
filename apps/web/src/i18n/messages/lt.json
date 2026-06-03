@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "forClients": "Klientams",
+    "forProfessionals": "Specialistams",
+    "about": "Apie mus",
+    "login": "Prisijungti",
+    "getStarted": "Pradėti"
+  },
+  "hero": {
+    "headline": "Jūsų grožio kelionė —\nvienoje vietoje.",
+    "subheadline": "Sekite kiekvieną procedūrą. Dalinkitės savo sąlygomis. Pažinkite savo odą.",
+    "ctaClient": "Esu klientas",
+    "ctaPro": "Esu specialistas"
+  },
+  "sections": {
+    "mapJourney": {
+      "title": "Sekite kiekvieną procedūrą pagal zoną.",
+      "body": "Susiekite procedūras su konkrečiomis sritimis — veidu, kaklu, lūpomis ir kt."
+    },
+    "shareTerms": {
+      "title": "Dalinkitės savo sąlygomis.",
+      "body": "Parodykite QR kodą. Gydytojas gauna tik tai, ką leidžiate. Atšaukite bet kada."
+    },
+    "builtWithCare": {
+      "title": "Sukurta su rūpesčiu.",
+      "encrypted": "Šifruota",
+      "encryptedDesc": "Jūsų įrašai šifruojami prieš saugojimą. Mes jų negalime perskaityti.",
+      "yourData": "Jūsų duomenys — jūsų",
+      "yourDataDesc": "Eksportuokite ar ištrinkite viską, bet kada, vienu paspaudimu.",
+      "aiControl": "AI, kurį valdote jūs",
+      "aiControlDesc": "Įžvalgos yra pasirenkamos. Mes niekada nesiunčiame jūsų nuotraukų ar užrašų AI."
+    }
+  },
+  "footer": {
+    "privacy": "Privatumas",
+    "terms": "Sąlygos",
+    "contact": "Kontaktai"
+  },
+  "auth": {
+    "login": "Prisijungti",
+    "register": "Sukurti paskyrą",
+    "email": "El. paštas",
+    "password": "Slaptažodis",
+    "forgotPassword": "Pamiršote slaptažodį?",
+    "noAccount": "Neturite paskyros?",
+    "haveAccount": "Jau turite paskyrą?"
+  },
+  "common": {
+    "loading": "Kraunama…",
+    "error": "Kažkas nutiko.",
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "delete": "Ištrinti",
+    "confirm": "Patvirtinti"
+  }
+}
