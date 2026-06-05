@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Fraunces, Inter } from 'next/font/google'
+import { Fraunces, Inter, Syncopate } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getMessages } from 'next-intl/server'
 import { ThemeProvider } from '@/components/theme/ThemeProvider'
@@ -14,6 +14,13 @@ const fraunces = Fraunces({
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
+})
+
+const syncopate = Syncopate({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-syncopate',
   display: 'swap',
 })
 
@@ -43,7 +50,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${fraunces.variable} ${inter.variable} h-full`}
+      className={`${fraunces.variable} ${inter.variable} ${syncopate.variable} h-full`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
