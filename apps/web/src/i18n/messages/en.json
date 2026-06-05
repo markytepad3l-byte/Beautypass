@@ -52,5 +52,48 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "confirm": "Confirm"
+  },
+  "app": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "treatments": "Treatments",
+      "photos": "Photos",
+      "qr": "Share",
+      "permissions": "Permissions",
+      "insights": "Insights",
+      "account": "Account",
+      "logout": "Log out"
+    },
+    "dashboard": {
+      "greeting": "Welcome back",
+      "treatmentsCount": "Treatments",
+      "permissionsCount": "Active shares",
+      "recentTreatments": "Recent treatments",
+      "noTreatments": "You haven't added a treatment yet.",
+      "addFirst": "Add your first treatment",
+      "insight": "Latest insight",
+      "noInsight": "Generate an AI summary of your treatment timeline.",
+      "generateInsight": "Generate insight",
+      "viewAll": "View all"
+    },
+    "treatments": {
+      "title": "Treatments",
+      "new": "New treatment",
+      "empty": "No treatments yet.",
+      "form": {
+        "title": "Title",
+        "titlePlaceholder": "e.g. Botox forehead",
+        "type": "Type",
+        "typePlaceholder": "e.g. botox, filler, laser",
+        "date": "Date",
+        "status": "Status",
+        "statusScheduled": "Scheduled",
+        "statusCompleted": "Completed",
+        "statusCancelled": "Cancelled",
+        "notes": "Notes",
+        "notesPlaceholder": "Private notes (encrypted at rest)",
+        "save": "Save treatment"
+      }
+    }
   }
 }
