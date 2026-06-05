@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { motion } from 'framer-motion'
-import { VideoOrPlaceholder } from '@/components/ui/VideoOrPlaceholder'
+import { ImageOrPlaceholder } from '@/components/ui/ImageOrPlaceholder'
 
 export function SplitSection() {
   const tHero = useTranslations('hero')
@@ -18,8 +18,8 @@ export function SplitSection() {
           title="For clients"
           tag={tHero('ctaClient')}
           body="Your personal beauty diary. Track every treatment, store your photos privately, and share with doctors only when you choose."
-          videoSrc="/videos/for-clients.mp4"
-          videoLabel="for-clients.mp4"
+          videoSrc="/images/for-clients.jpg"
+          videoLabel="for-clients.jpg"
           ctaLabel={tHero('ctaClient')}
         />
         {/* Professionals */}
@@ -28,8 +28,8 @@ export function SplitSection() {
           title="For professionals"
           tag={tNav('forProfessionals')}
           body="Access client history with their consent. Add notes, view treatment timelines, and build trust through transparency."
-          videoSrc="/videos/for-pro.mp4"
-          videoLabel="for-pro.mp4"
+          videoSrc="/images/for-pro.jpg"
+          videoLabel="for-pro.jpg"
           ctaLabel="Apply for access"
         />
       </div>
@@ -66,8 +66,9 @@ function SplitCard({
       }}
     >
       <div className="aspect-[16/10] overflow-hidden">
-        <VideoOrPlaceholder
+        <ImageOrPlaceholder
           src={videoSrc}
+          alt={title}
           placeholderLabel={videoLabel}
           className="w-full h-full"
         />

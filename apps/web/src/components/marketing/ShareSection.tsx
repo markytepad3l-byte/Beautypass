@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 import { motion } from 'framer-motion'
-import { VideoOrPlaceholder } from '@/components/ui/VideoOrPlaceholder'
+import { ImageOrPlaceholder } from '@/components/ui/ImageOrPlaceholder'
 
 export function ShareSection() {
   const t = useTranslations('sections.shareTerms')
@@ -25,9 +25,10 @@ export function ShareSection() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="aspect-square rounded-3xl overflow-hidden shadow-xl"
         >
-          <VideoOrPlaceholder
-            src="/videos/share-terms.mp4"
-            placeholderLabel="share-terms.mp4"
+          <ImageOrPlaceholder
+            src="/images/share-terms.jpg"
+            alt="Woman holding a smartphone"
+            placeholderLabel="share-terms.jpg"
             className="w-full h-full"
           />
         </motion.div>

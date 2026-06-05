@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { VideoOrPlaceholder } from '@/components/ui/VideoOrPlaceholder'
+import { ImageOrPlaceholder } from '@/components/ui/ImageOrPlaceholder'
 
 export function Hero() {
   const t = useTranslations('hero')
@@ -79,10 +79,12 @@ export function Hero() {
               '0 30px 60px -20px rgba(192, 96, 120, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.15)',
           }}
         >
-          <VideoOrPlaceholder
-            src="/videos/hero.mp4"
-            placeholderLabel="hero.mp4"
-            className="w-full h-full"
+          <ImageOrPlaceholder
+            src="/images/hero.jpg"
+            alt="A serene woman with glowing skin"
+            placeholderLabel="hero.jpg"
+            className="w-full h-full rounded-3xl"
+            priority
           />
         </motion.div>
       </div>
