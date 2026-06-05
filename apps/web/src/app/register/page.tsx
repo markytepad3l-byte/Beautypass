@@ -32,7 +32,7 @@ function RegisterForm() {
 
     if (!res || !res.ok) {
       const body = await res?.json().catch(() => ({}))
-      setError(body?.message ?? 'Something went wrong. Please try again.')
+      setError(body?.error ?? 'Something went wrong. Please try again.')
       setLoading(false)
       return
     }

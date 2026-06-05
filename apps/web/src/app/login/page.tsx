@@ -24,7 +24,7 @@ export default function LoginPage() {
 
     if (!res || !res.ok) {
       const body = await res?.json().catch(() => ({}))
-      setError(body?.message ?? 'Invalid email or password.')
+      setError(body?.error ?? 'Invalid email or password.')
       setLoading(false)
       return
     }
@@ -47,7 +47,7 @@ export default function LoginPage() {
       }
     >
       <form onSubmit={handleSubmit} className="space-y-5">
-        <Field label={t('email')} error={error && ' '}>
+        <Field label={t('email')}>
           <Input
             name="email"
             type="email"
