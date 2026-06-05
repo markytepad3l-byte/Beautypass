@@ -87,10 +87,12 @@
         "typePlaceholder": "e.g. botox, filler, laser",
         "date": "Date",
         "status": "Status",
-        "statusScheduled": "Scheduled",
+        "statusPlanned": "Planned",
         "statusCompleted": "Completed",
-        "statusCancelled": "Cancelled",
+        "statusOngoing": "Ongoing",
         "notes": "Notes",
+        "bodyZone": "Body zone",
+        "bodyZonePlaceholder": "Select a zone on the body…",
         "notesPlaceholder": "Private notes (encrypted at rest)",
         "save": "Save treatment"
       }

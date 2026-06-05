@@ -1,13 +1,18 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useState, use } from 'react'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 import { PageShell, Card } from '@/components/app/PageShell'
 import { BodyZonePicker, type BodyZone } from '@/components/body/BodyZonePicker'
 
-export default function NewTreatmentPage() {
-  const t = useTranslations('app.treatments.form')
+export default function ProNewTreatmentPage({
+  params,
+}: {
+  params: Promise<{ clientId: string }>
+}) {
+  const { clientId } = use(params)
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -16,11 +21,17 @@ export default function NewTreatmentPage() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError('')
-    setLoading(true)
 
+    if (!bodyZone) {
+      setError('Please select a body zone.')
+      return
+    }
+
+    setLoading(true)
     const form = new FormData(e.currentTarget)
     const notes = form.get('notes')?.toString()
     const payload = {
+      clientId,
       title: form.get('title'),
       type: form.get('type'),
       date: form.get('date'),
@@ -42,47 +53,72 @@ export default function NewTreatmentPage() {
       return
     }
 
-    router.push('/app/treatments')
+    router.push(`/pro/clients/${clientId}`)
     router.refresh()
   }
 
   return (
-    <PageShell title="New treatment" subtitle="Add a treatment to your timeline.">
-      <div className="grid lg:grid-cols-[1fr_360px] gap-6">
+    <PageShell
+      title="Record treatment"
+      subtitle="Tap a body zone, then fill in the treatment details."
+    >
+      <Link
+        href={`/pro/clients/${clientId}`}
+        className="inline-flex items-center gap-1.5 text-sm mb-6 hover:underline"
+        style={{ color: 'var(--bp-muted)' }}
+      >
+        <ArrowLeft size={14} /> Back to client
+      </Link>
+
+      <div className="grid lg:grid-cols-[420px_1fr] gap-6">
+        <Card>
+          <BodyZonePicker value={bodyZone} onChange={setBodyZone} />
+        </Card>
+
         <Card>
           <form onSubmit={handleSubmit} className="space-y-5">
-            <Field label={t('title')}>
-              <Input name="title" required placeholder={t('titlePlaceholder')} />
+            <div
+              className="px-4 py-3 rounded-xl"
+              style={{
+                background: bodyZone ? 'var(--bp-blush)' : 'var(--bp-bg)',
+                color: bodyZone ? 'var(--bp-primary)' : 'var(--bp-muted)',
+              }}
+            >
+              <div className="text-xs uppercase tracking-wider opacity-70">Treating</div>
+              <div className="text-base font-medium capitalize mt-0.5">
+                {bodyZone ?? 'Select a zone on the body →'}
+              </div>
+            </div>
+
+            <Field label="Title">
+              <Input name="title" required placeholder="e.g. Botox forehead (4 units)" />
             </Field>
-            <Field label={t('type')}>
-              <Input name="type" required placeholder={t('typePlaceholder')} />
+            <Field label="Type">
+              <Input name="type" required placeholder="e.g. botox, filler, laser" />
             </Field>
             <div className="grid grid-cols-2 gap-4">
-              <Field label={t('date')}>
-                <Input name="date" type="date" required defaultValue={new Date().toISOString().slice(0, 10)} />
+              <Field label="Date">
+                <Input
+                  name="date"
+                  type="date"
+                  required
+                  defaultValue={new Date().toISOString().slice(0, 10)}
+                />
               </Field>
-              <Field label={t('status')}>
+              <Field label="Status">
                 <Select name="status" defaultValue="completed">
-                  <option value="planned">{t('statusPlanned')}</option>
-                  <option value="completed">{t('statusCompleted')}</option>
-                  <option value="ongoing">{t('statusOngoing')}</option>
+                  <option value="planned">Planned</option>
+                  <option value="completed">Completed</option>
+                  <option value="ongoing">Ongoing</option>
                 </Select>
               </Field>
             </div>
-            <Field label={t('bodyZone')}>
-              <div
-                className="px-3.5 py-2.5 rounded-xl border text-sm"
-                style={{
-                  background: 'var(--bp-bg)',
-                  borderColor: 'var(--bp-border)',
-                  color: bodyZone ? 'var(--bp-ink)' : 'var(--bp-muted)',
-                }}
-              >
-                {bodyZone ?? t('bodyZonePlaceholder')}
-              </div>
-            </Field>
-            <Field label={t('notes')}>
-              <Textarea name="notes" rows={4} placeholder={t('notesPlaceholder')} />
+            <Field label="Clinical notes">
+              <Textarea
+                name="notes"
+                rows={4}
+                placeholder="Dosage, technique, follow-up notes (encrypted at rest)"
+              />
             </Field>
 
             {error && (
@@ -95,25 +131,20 @@ export default function NewTreatmentPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="px-5 py-2.5 rounded-xl text-sm font-medium transition-colors disabled:opacity-60"
+                className="px-5 py-2.5 rounded-xl text-sm font-medium disabled:opacity-60"
                 style={{ background: 'var(--bp-primary)', color: 'var(--bp-surface)' }}
               >
-                {loading ? '…' : t('save')}
+                {loading ? '…' : 'Record treatment'}
               </button>
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="px-5 py-2.5 rounded-xl text-sm font-medium transition-colors"
+              <Link
+                href={`/pro/clients/${clientId}`}
+                className="inline-flex items-center px-5 py-2.5 rounded-xl text-sm font-medium"
                 style={{ color: 'var(--bp-muted)' }}
               >
                 Cancel
-              </button>
+              </Link>
             </div>
           </form>
-        </Card>
-
-        <Card>
-          <BodyZonePicker value={bodyZone} onChange={setBodyZone} />
         </Card>
       </div>
     </PageShell>

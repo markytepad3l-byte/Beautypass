@@ -16,23 +16,50 @@ function decryptNotes(notes: string | null): string | null {
 }
 
 // POST /api/treatments
-router.post('/', authorize('client'), validate(createTreatmentSchema), async (req: Request, res: Response) => {
-  const { title, type, date, notes, status, doctorId, clinicId } = req.body
-  const clientId = req.user!.userId
+router.post('/', validate(createTreatmentSchema), async (req: Request, res: Response) => {
+  const { userId, role } = req.user!
+  const { title, type, date, notes, status, doctorId, clinicId, bodyZone } = req.body
+  let { clientId } = req.body
+
+  if (role === 'client') {
+    clientId = userId
+  } else {
+    if (!clientId) {
+      res.status(400).json({ error: 'clientId is required when a professional records a treatment' })
+      return
+    }
+    await requirePermission(clientId, userId)
+  }
 
   const encryptedNotes = notes ? encrypt(notes) : null
+  const resolvedDoctorId = role === 'doctor' ? userId : doctorId ?? null
+  const resolvedClinicId = role === 'clinic_admin' ? userId : clinicId ?? null
 
   const { rows: [treatment] } = await pool.query(
-    `INSERT INTO treatments (client_id, doctor_id, clinic_id, title, type, date, notes, status)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-    [clientId, doctorId ?? null, clinicId ?? null, title, type, date, encryptedNotes, status]
+    `INSERT INTO treatments
+       (client_id, doctor_id, clinic_id, title, type, date, notes, status, body_zone, created_by_id)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+    [clientId, resolvedDoctorId, resolvedClinicId, title, type, date, encryptedNotes, status, bodyZone ?? null, userId]
   )
+
+  if (role !== 'client') {
+    await writeAuditLog({
+      actorId: userId,
+      actorRole: role,
+      action: 'create_treatment',
+      resourceType: 'treatment',
+      resourceId: treatment.id,
+      ip: req.ip,
+    })
+  }
+
   res.status(201).json({ ...treatment, notes: notes ?? null })
 })
 
-// GET /api/treatments
+// GET /api/treatments?clientId=...
 router.get('/', async (req: Request, res: Response) => {
   const { userId, role } = req.user!
+  const clientIdFilter = typeof req.query.clientId === 'string' ? req.query.clientId : null
 
   let rows: Record<string, unknown>[]
   if (role === 'client') {
@@ -50,8 +77,9 @@ router.get('/', async (req: Request, res: Response) => {
          AND p.revoked_at IS NULL
          AND (p.expires_at IS NULL OR p.expires_at > now())
          AND t.deleted_at IS NULL
+         AND ($2::uuid IS NULL OR t.client_id = $2::uuid)
        ORDER BY t.date DESC`,
-      [userId]
+      [userId, clientIdFilter]
     )
     rows = result.rows
 

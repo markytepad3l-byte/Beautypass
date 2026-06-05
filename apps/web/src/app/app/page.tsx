@@ -9,7 +9,7 @@ type Treatment = {
   title: string
   type: string
   date: string
-  status: 'scheduled' | 'completed' | 'cancelled'
+  status: 'planned' | 'completed' | 'ongoing'
 }
 
 type Permission = { id: string; revoked_at: string | null; expires_at: string | null }
@@ -155,7 +155,7 @@ function StatusPill({ status }: { status: Treatment['status'] }) {
   const tone =
     status === 'completed'
       ? { bg: 'var(--bp-blush)', fg: 'var(--bp-primary)' }
-      : status === 'scheduled'
+      : status === 'planned'
       ? { bg: 'var(--bp-border)', fg: 'var(--bp-ink)' }
       : { bg: 'transparent', fg: 'var(--bp-muted)' }
   return (

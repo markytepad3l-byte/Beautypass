@@ -9,7 +9,7 @@ type Treatment = {
   title: string
   type: string
   date: string
-  status: 'scheduled' | 'completed' | 'cancelled'
+  status: 'planned' | 'completed' | 'ongoing'
 }
 
 export default async function TreatmentsPage() {

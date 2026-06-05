@@ -13,6 +13,7 @@ import qrRouter from './routes/qr'
 import insightsRouter from './routes/insights'
 import notesRouter from './routes/notes'
 import accountRouter from './routes/account'
+import professionalRouter from './routes/professional'
 
 export function createApp() {
   const app = express()
@@ -32,6 +33,7 @@ export function createApp() {
   app.use('/api/qr', qrRouter)
   app.use('/api/insights', insightsRouter)
   app.use('/api/account', accountRouter)
+  app.use('/api/professional', professionalRouter)
 
   app.use(errorHandler)
 

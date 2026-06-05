@@ -49,6 +49,8 @@ export const createTreatmentSchema = z.object({
   status: z.enum(['planned', 'completed', 'ongoing']).default('planned'),
   doctorId: z.string().uuid().optional(),
   clinicId: z.string().uuid().optional(),
+  bodyZone: z.string().max(100).optional(),
+  clientId: z.string().uuid().optional(), // required when a doctor records on behalf of a client
 })
 
 export const updateTreatmentSchema = createTreatmentSchema.partial()
