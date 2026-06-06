@@ -143,7 +143,7 @@ export function Footer() {
         }
       `}</style>
 
-      <footer className="bp-footer">
+      <footer className="bp-footer" style={{ scrollSnapAlign: 'start' }}>
         <div className="bp-footer-grid">
           {/* Brand column */}
           <div className="bp-footer-brand">

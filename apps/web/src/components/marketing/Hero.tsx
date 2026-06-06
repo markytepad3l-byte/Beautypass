@@ -59,6 +59,7 @@ export function Hero() {
           display: flex;
           align-items: center;
           justify-content: center;
+          scroll-snap-align: start;
         }
 
         .bp-grain {
