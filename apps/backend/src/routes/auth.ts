@@ -33,8 +33,9 @@ router.post('/register', validate(registerSchema), async (req: Request, res: Res
   try {
     await client.query('BEGIN')
 
+    const isDev = process.env.NODE_ENV !== 'production'
     const { rows: [user] } = await client.query(
-      `INSERT INTO users (email, password_hash, role) VALUES ($1, $2, $3) RETURNING id`,
+      `INSERT INTO users (email, password_hash, role${isDev ? ', email_verified_at' : ''}) VALUES ($1, $2, $3${isDev ? ', now()' : ''}) RETURNING id`,
       [email, passwordHash, role]
     )
 
@@ -55,20 +56,21 @@ router.post('/register', validate(registerSchema), async (req: Request, res: Res
       )
     }
 
-    const rawToken = generateToken()
-    const tokenHash = hashToken(rawToken)
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
-    await client.query(
-      `INSERT INTO email_verifications (user_id, token_hash, expires_at) VALUES ($1, $2, $3)`,
-      [user.id, tokenHash, expiresAt]
-    )
-
     await client.query('COMMIT')
 
-    const link = `${config.baseUrl}/api/auth/verify-email?userId=${user.id}&token=${rawToken}`
-    await sendEmail({ to: email, subject: 'Verify your BeautyPass email', text: verificationEmailText(link) })
+    if (!isDev) {
+      const rawToken = generateToken()
+      const tokenHash = hashToken(rawToken)
+      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
+      await pool.query(
+        `INSERT INTO email_verifications (user_id, token_hash, expires_at) VALUES ($1, $2, $3)`,
+        [user.id, tokenHash, expiresAt]
+      )
+      const link = `${config.baseUrl}/api/auth/verify-email?userId=${user.id}&token=${rawToken}`
+      await sendEmail({ to: email, subject: 'Verify your BeautyPass email', text: verificationEmailText(link) })
+    }
 
-    res.status(201).json({ message: 'Registered successfully. Please check your email to verify your account.' })
+    res.status(201).json({ message: isDev ? 'Registered successfully.' : 'Registered successfully. Please check your email to verify your account.' })
   } catch (err) {
     await client.query('ROLLBACK')
     throw err
