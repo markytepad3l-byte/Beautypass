@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { AuthLayout, Field, Input, SubmitButton } from '@/components/auth/AuthLayout'
+import { AuthLayout, Field, Input, SubmitButton, SocialButton } from '@/components/auth/AuthLayout'
 
 export default function LoginPage() {
   const t = useTranslations('auth')
@@ -46,33 +46,31 @@ export default function LoginPage() {
         </>
       }
     >
+      {/* Social login */}
+      <div className="space-y-3">
+        <SocialButton provider="google" onClick={() => alert('Google sign-in coming soon.')} />
+        <SocialButton provider="apple" onClick={() => alert('Apple sign-in coming soon.')} />
+      </div>
+
+      {/* Divider */}
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-px" style={{ background: 'var(--bp-border)' }} />
+        <span className="text-xs" style={{ color: 'var(--bp-muted)' }}>or continue with email</span>
+        <div className="flex-1 h-px" style={{ background: 'var(--bp-border)' }} />
+      </div>
+
+      {/* Email / password form */}
       <form onSubmit={handleSubmit} className="space-y-5">
         <Field label={t('email')}>
-          <Input
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            placeholder="you@example.com"
-          />
+          <Input name="email" type="email" autoComplete="email" required placeholder="you@example.com" />
         </Field>
 
         <Field label={t('password')} error={error || undefined}>
-          <Input
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            placeholder="••••••••"
-          />
+          <Input name="password" type="password" autoComplete="current-password" required placeholder="••••••••" />
         </Field>
 
         <div className="flex justify-end">
-          <Link
-            href="/forgot-password"
-            className="text-xs hover:underline"
-            style={{ color: 'var(--bp-muted)' }}
-          >
+          <Link href="/forgot-password" className="text-xs hover:underline" style={{ color: 'var(--bp-muted)' }}>
             {t('forgotPassword')}
           </Link>
         </div>
