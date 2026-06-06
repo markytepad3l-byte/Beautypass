@@ -6,21 +6,26 @@ import { useEffect, useRef } from 'react'
 export function Hero() {
   const canvasRef = useRef<HTMLDivElement>(null)
   const layersRef = useRef<HTMLDivElement[]>([])
+  const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
+    let targetX = 0
+    let targetY = 0
+
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (window.innerWidth / 2 - e.pageX) / 25
-      const y = (window.innerHeight / 2 - e.pageY) / 25
-      canvas.style.transform = `rotateX(${55 + y / 2}deg) rotateZ(${-25 + x / 2}deg)`
-      layersRef.current.forEach((layer, index) => {
-        if (!layer) return
-        const depth = (index + 1) * 15
-        const moveX = x * (index + 1) * 0.2
-        const moveY = y * (index + 1) * 0.2
-        layer.style.transform = `translateZ(${depth}px) translate(${moveX}px, ${moveY}px)`
+      targetX = (window.innerWidth / 2 - e.pageX) / 25
+      targetY = (window.innerHeight / 2 - e.pageY) / 25
+
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      rafRef.current = requestAnimationFrame(() => {
+        canvas.style.transform = `rotateX(${55 + targetY / 2}deg) rotateZ(${-25 + targetX / 2}deg)`
+        layersRef.current.forEach((layer, index) => {
+          if (!layer) return
+          layer.style.transform = `translateZ(${(index + 1) * 15}px) translate(${targetX * (index + 1) * 0.2}px, ${targetY * (index + 1) * 0.2}px)`
+        })
       })
     }
 
@@ -33,10 +38,11 @@ export function Hero() {
       canvas.style.transform = 'rotateX(55deg) rotateZ(-25deg) scale(1)'
     }, 300)
 
-    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
       clearTimeout(timeout)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
   }, [])
 
@@ -60,8 +66,9 @@ export function Hero() {
           inset: 0;
           pointer-events: none;
           z-index: 10;
-          opacity: 0.12;
+          opacity: 0.10;
           filter: url(#bp-grain-filter);
+          will-change: auto;
         }
 
         .bp-viewport {
@@ -80,6 +87,7 @@ export function Hero() {
           height: 500px;
           transform-style: preserve-3d;
           transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+          will-change: transform, opacity;
         }
 
         .bp-layer {
@@ -87,23 +95,25 @@ export function Hero() {
           inset: 0;
           border: 1px solid rgba(224, 224, 224, 0.08);
           background-size: cover;
-          background-position: center;
+          background-position: center top;
           transition: transform 0.5s ease;
+          will-change: transform;
+          backface-visibility: hidden;
         }
 
         .bp-layer-1 {
-          background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1200');
-          filter: grayscale(1) contrast(1.2) brightness(0.5);
+          background-image: url('https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&fm=webp&q=65&w=1200');
+          filter: grayscale(1) contrast(1.3) brightness(0.45);
         }
         .bp-layer-2 {
-          background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1200');
-          filter: grayscale(1) contrast(1.1) brightness(0.7);
+          background-image: url('https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&fm=webp&q=65&w=1200');
+          filter: grayscale(1) contrast(1.2) brightness(0.65);
           opacity: 0.6;
           mix-blend-mode: screen;
         }
         .bp-layer-3 {
-          background-image: url('https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&q=80&w=1200');
-          filter: grayscale(1) contrast(1.3) brightness(0.8);
+          background-image: url('https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&fm=webp&q=65&w=1200');
+          filter: grayscale(1) contrast(1.4) brightness(0.75);
           opacity: 0.4;
           mix-blend-mode: overlay;
         }
@@ -118,7 +128,7 @@ export function Hero() {
             circle at 50% 50%,
             transparent 0,
             transparent 40px,
-            rgba(255, 255, 255, 0.04) 41px,
+            rgba(255, 255, 255, 0.035) 41px,
             transparent 42px
           );
           transform: translateZ(120px);
@@ -176,7 +186,7 @@ export function Hero() {
           font-size: 0.75rem;
           letter-spacing: 0.05em;
           clip-path: polygon(0 0, 100% 0, 100% 70%, 88% 100%, 0 100%);
-          transition: background 0.3s, transform 0.3s;
+          transition: background 0.3s, color 0.3s, transform 0.3s;
           display: inline-block;
         }
         .bp-btn-primary:hover {
@@ -215,19 +225,9 @@ export function Hero() {
         }
 
         @keyframes bp-flow {
-          0%,
-          100% {
-            transform: scaleY(0);
-            transform-origin: top;
-          }
-          50% {
-            transform: scaleY(1);
-            transform-origin: top;
-          }
-          51% {
-            transform: scaleY(1);
-            transform-origin: bottom;
-          }
+          0%, 100% { transform: scaleY(0); transform-origin: top; }
+          50%       { transform: scaleY(1); transform-origin: top; }
+          51%       { transform: scaleY(1); transform-origin: bottom; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -236,44 +236,27 @@ export function Hero() {
             transform: rotateX(55deg) rotateZ(-25deg) scale(1) !important;
             opacity: 1 !important;
           }
-          .bp-scroll-hint {
-            animation: none;
-            opacity: 0.4;
-          }
+          .bp-scroll-hint { animation: none; opacity: 0.4; }
         }
 
         @media (max-width: 640px) {
-          .bp-canvas-3d {
-            width: 100vw;
-            height: 320px;
-          }
-          .bp-interface {
-            padding: 1.5rem;
-          }
-          .bp-cta-buttons {
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 0.5rem;
-          }
-          .bp-hero-title {
-            font-size: clamp(2.5rem, 16vw, 6rem);
-          }
+          .bp-canvas-3d { width: 100vw; height: 320px; }
+          .bp-interface { padding: 1.5rem; }
+          .bp-cta-buttons { flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+          .bp-hero-title { font-size: clamp(2.5rem, 16vw, 6rem); }
         }
       `}</style>
 
-      {/* SVG grain filter — zero-size, just defines the filter */}
       <svg style={{ position: 'absolute', width: 0, height: 0 }} aria-hidden>
         <filter id="bp-grain-filter">
-          <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" />
+          <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
           <feColorMatrix type="saturate" values="0" />
         </filter>
       </svg>
 
       <section className="bp-hero-section">
-        {/* Film grain overlay */}
         <div className="bp-grain" aria-hidden />
 
-        {/* 3D parallax canvas */}
         <div className="bp-viewport" aria-hidden>
           <div className="bp-canvas-3d" ref={canvasRef}>
             <div className="bp-layer bp-layer-1" ref={el => { if (el) layersRef.current[0] = el }} />
@@ -283,29 +266,23 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Interface overlay */}
         <div className="bp-interface">
-          {/* Top-left wordmark */}
           <div style={{ fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.1em' }}>
             BEAUTYPASS
           </div>
-
-          {/* Top-right data readout */}
           <div style={{ textAlign: 'right', fontFamily: 'monospace', color: '#C06078', fontSize: '0.65rem', lineHeight: 1.8 }}>
             <div>EST. 2024</div>
             <div>YOUR DATA, YOUR RULES</div>
           </div>
 
-          {/* Giant title */}
           <h1 className="bp-hero-title">
             BEAUTY<br />PASS
           </h1>
 
-          {/* Bottom row */}
           <div className="bp-cta-row">
             <div className="bp-cta-meta">
               <p>[ YOUR JOURNEY ]</p>
-              <p>MAP · TRACK · SHARE</p>
+              <p>TRACK · SHARE · OWN</p>
             </div>
             <div className="bp-cta-buttons">
               <Link href="/register?role=client" className="bp-btn-primary">
@@ -318,7 +295,6 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Scroll hint */}
         <div className="bp-scroll-hint" aria-hidden />
       </section>
     </>
